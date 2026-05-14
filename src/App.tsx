@@ -26,351 +26,19 @@ import {
   Users
 } from 'lucide-react';
 import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
-
-// Constants
-type Language = 'en' | 'mr';
-
-const TRANSLATIONS = {
-  en: {
-    nav: {
-      home: 'Home',
-      collection: 'Collection',
-      about: 'About',
-      services: 'Services',
-      gallery: 'Gallery',
-      contact: 'Contact',
-      book: 'Book Appointment'
-    },
-    hero: {
-      subtitle: 'Premium Interiors & Furniture',
-      title1: 'Welcome To',
-      title2: 'Om Sai',
-      title3: 'Furniture.',
-      desc: 'Premium quality sofas, beds, dining tables, and custom interior solutions crafted with natural materials and timeless design.',
-      explore: 'Explore Collection',
-      contact: 'Contact Us',
-      material: '01 / Material',
-      materialDesc: 'Ethically sourced Walnut & Solid Oak',
-      design: '02 / Design',
-      designDesc: 'Custom Architectural Planning',
-      featured: 'Featured Piece',
-      sofa: 'The Nordland Velvet Sofa'
-    },
-    categories: {
-      title: 'Curated Collections',
-      subtitle: 'Explore By Space',
-      items: ['Sofa Sets', 'Beds', 'Dining Tables', 'Office Furniture', 'Modular Kitchen', 'Wooden Furniture'],
-      label: 'Collection'
-    },
-    bestSellers: {
-      title: 'Design Icons',
-      subtitle: 'The Best Sellers',
-      itemLabel: 'Item',
-      series: 'Handcrafted Series',
-      inquiry: 'Send Inquiry'
-    },
-    about: {
-      title: 'The Art Of Minimalist Craft',
-      subtitle: 'About Om Sai Furniture',
-      manifesto: 'Our Manifesto',
-      manifestoDesc: 'Sustainability by design, quality by craft.',
-      desc1: 'At Om Sai Furniture, we believe that your home is a reflection of your personality. Our mission is to provide high-end, contemporary furniture that combines artisanal craftsmanship with modern utility.',
-      desc2: '"Everything we make is designed to last a lifetime, ensuring your investment in comfort stands the test of time."',
-      artisan: '03 / Artisan',
-      artisanDesc: 'Handcrafted by master artisans with decades of inherited knowledge.',
-      nature: '04 / Nature',
-      natureDesc: 'We source only the finest, eco-friendly timbers and organic luxury fabrics.'
-    },
-    owner: {
-      title: 'The Visionary Behind Om Sai',
-      subtitle: 'Meet Our Founder',
-      name: 'Abhishek Ghotekar',
-      role: 'Founder & Principal Designer',
-      message: 'Furniture is not just about utility; it’s about creating a legacy within your home. My journey with Om Sai Furniture started with a simple belief: every piece of wood has a story, and our job is to tell it with grace and strength.',
-      experience: '15+ Years of Mastery'
-    },
-    services: {
-      quality: 'Premium Quality',
-      qualityDesc: 'Crafted with the finest materials for longevity.',
-      pricing: 'Affordable Pricing',
-      pricingDesc: 'Luxury furniture at competitive market prices.',
-      delivery: 'Fast Delivery',
-      deliveryDesc: 'Swift and secure shipping to your doorstep.',
-      trusted: 'Trusted Service',
-      trustedDesc: 'Thousands of satisfied homeowners and business owners.'
-    },
-    testimonials: {
-      title: 'Conversations',
-      subtitle: 'Client Stories',
-      reviews: [
-        { name: 'Emily Rivers', role: 'Home Owner', content: 'Om Sai Furniture transformed my house into a dream home. The attention to detail is unmatched.' },
-        { name: 'Marcus Chen', role: 'Interior Designer', content: 'As a designer, I always recommend Om Sai Furniture for their consistency and premium finish.' },
-        { name: 'Sarah Miller', role: 'Office Manager', content: 'Our new office setup is professional yet comfortable. The team was fantastic to work with.' }
-      ]
-    },
-    gallery: {
-      title: 'Architectural Views',
-      subtitle: 'Visual Showcase'
-    },
-    contact: {
-      title: 'Get In Touch',
-      desc: 'Have a project in mind? Our interior consultants are ready to help you curate your space.',
-      phone: 'Phone',
-      email: 'Email',
-      visit: 'Visit Showroom',
-      connected: 'Stay Connected',
-      formTitle: 'Inquiry Form',
-      name: 'Your Name',
-      emailLabel: 'Email Address',
-      subject: 'Subject',
-      detail: 'Requirement Detail',
-      placeholderName: 'John Doe',
-      placeholderEmail: 'john@example.com',
-      placeholderDetail: 'Tell us about your space...',
-      submit: 'Send Inquiry Message',
-      footerNote: "We'll get back to you within 24 hours.",
-      locationTitle: 'Showroom Location',
-      whatsapp: 'WhatsApp Now',
-      subjects: ['Showroom Visit Inquiry', 'Custom Furniture Catalog', 'Interior Consultation', 'Bulk Order Inquiry']
-    },
-    footer: {
-      desc: 'Curating high-end lifestyle furniture and bespoke interior solutions since 2010. Excellence in every corner.',
-      social: ['Instagram', 'Pinterest', 'Behance'],
-      company: 'Company',
-      access: 'Showroom Access',
-      open: 'Showroom Open',
-      cities: 'New York / Milan / Tokyo',
-      newsletter: 'SUBSCRIBE TO OM SAI UPDATES',
-      submit: 'Submit',
-      rights: 'ALL RIGHTS RESERVED.',
-      privacy: 'Privacy',
-      terms: 'Terms'
-    },
-    process: {
-      title: 'Our Craftsmanship Journey',
-      subtitle: 'The Creation Process',
-      steps: [
-        { id: '01', title: 'Consultation', desc: 'We begin by understanding your vision and spatial dynamics.' },
-        { id: '02', title: 'Design', desc: 'Our architects create detailed 3D blueprints of your piece.' },
-        { id: '03', title: 'Craft', desc: 'Master artisans bring the design to life using traditional tools.' },
-        { id: '04', title: 'Deliver', desc: 'White-glove delivery ensures your piece arrives in pristine condition.' }
-      ]
-    },
-    sustainability: {
-      title: 'Eco-Conscious Ethics',
-      subtitle: 'Nature First',
-      desc: 'We are committed to preserving the planet while crafting beauty. Every log is tracked from sustainably managed forests, ensuring the lungs of our earth remain healthy for generations.',
-      stats: [
-        { label: 'Sustainably Sourced', value: '100%' },
-        { label: 'Zero Waste Production', value: '94%' },
-        { label: 'Fair Trade Artisans', value: '100%' }
-      ]
-    },
-    consultation: {
-      title: 'Bespeak Your Space',
-      subtitle: 'Private Interior Design',
-      desc: 'Access our exclusive interior consultation service. Our senior designers will work with you to curate a cohesive aesthetic that speaks your language.',
-      button: 'Book Private Viewing'
-    }
-  },
-  mr: {
-    nav: {
-      home: 'होम',
-      collection: 'संग्रह',
-      about: 'आमच्याबद्दल',
-      services: 'सेवा',
-      gallery: 'गॅलरी',
-      contact: 'संपर्क',
-      book: 'अपॉइंटमेंट बुक करा'
-    },
-    hero: {
-      subtitle: 'प्रीमियम इंटीरियर आणि फर्निचर',
-      title1: 'स्वागत आहे',
-      title2: 'ओम साई',
-      title3: 'फर्निचरमध्ये.',
-      desc: 'प्रीमियम दर्जाचे सोफे, बेड, डायनिंग टेबल आणि नैसर्गिक साहित्य आणि कालातीत डिझाइनसह तयार केलेले सानुकूल इंटीरियर सोल्यूशन्स.',
-      explore: 'संग्रह पहा',
-      contact: 'आमच्याशी संपर्क साधा',
-      material: '०१ / साहित्य',
-      materialDesc: 'नैतिकदृष्ट्या प्राप्त अक्रोड आणि घन ओक',
-      design: '०२ / डिझाइन',
-      designDesc: 'सानुकूल आर्किटेक्चरल प्लॅनिंग',
-      featured: 'वैशिष्ट्यपूर्ण उत्पादन',
-      sofa: 'नॉर्डलँड मखमली सोफा'
-    },
-    categories: {
-      title: 'क्युरेटेड संग्रह',
-      subtitle: 'जागेनुसार शोधा',
-      items: ['सोफा सेट', 'बेड', 'डायनिंग टेबल', 'ऑफिस फर्निचर', 'मॉड्युलर किचन', 'लाकडी फर्निचर'],
-      label: 'संग्रह'
-    },
-    bestSellers: {
-      title: 'डिझाइन आयकॉन्स',
-      subtitle: 'बेस्ट सेलर्स',
-      itemLabel: 'वस्तू',
-      series: 'हँडक्राफ्टेड सिरीज',
-      inquiry: 'चौकशी पाठवा'
-    },
-    about: {
-      title: 'किमान हस्तकलेची कला',
-      subtitle: 'ओम साई फर्निचर बद्दल',
-      manifesto: 'आमचा जाहीरनामा',
-      manifestoDesc: 'डिझाइनद्वारे टिकाऊपणा, क्राफ्टद्वारे गुणवत्ता.',
-      desc1: 'ओम साई फर्निचरमध्ये, आमचा असा विश्वास आहे की तुमचे घर तुमच्या व्यक्तिमत्त्वाचे प्रतिबिंब आहे. आमचे ध्येय आधुनिक उपयोगितेसह कलाकुसर एकत्र करणारे उच्च-स्तरीय, समकालीन फर्निचर प्रदान करणे आहे.',
-      desc2: '"आम्ही बनवलेली प्रत्येक गोष्ट आयुष्यभर टिकण्यासाठी तयार केली गेली आहे, ज्यामुळे तुमच्या आरामातील गुंतवणूक काळाच्या कसोटीवर उतरते."',
-      artisan: '०३ / कारागीर',
-      artisanDesc: 'दशकांचा वारसा लाभलेल्या कारागिरांनी हाताने तयार केलेले.',
-      nature: '०४ / निसर्ग',
-      natureDesc: 'आम्ही फक्त उत्कृष्ट, पर्यावरणास अनुकूल लाकूड आणि सेंद्रिय लक्झरी कापड वापरतो.'
-    },
-    owner: {
-      title: 'ओम साई मागील दूरदृष्टी',
-      subtitle: 'आमच्या संस्थापकांना भेटा',
-      name: 'अभिषेक घोटेकर',
-      role: 'संस्थापक आणि मुख्य डिझाइनर',
-      message: 'फर्निचर म्हणजे केवळ उपयोग नाही; ते तुमच्या घरात एक वारसा तयार करण्याबद्दल आहे. ओम साई फर्निचरचा माझा प्रवास एका साध्या विश्वासाने सुरू झाला: लाकडाच्या प्रत्येक तुकड्याची एक कथा असते आणि ती कृपा आणि मजबुतीने सांगणे हे आमचे काम आहे.',
-      experience: '१५+ वर्षांचे प्रभुत्व'
-    },
-    services: {
-      quality: 'प्रीमियम गुणवत्ता',
-      qualityDesc: 'दीर्घायुष्यासाठी उत्कृष्ट साहित्याने तयार केलेले.',
-      pricing: 'परवडणारी किंमत',
-      pricingDesc: 'स्पर्धात्मक बाजारभावात लक्झरी फर्निचर.',
-      delivery: 'जलद वितरण',
-      deliveryDesc: 'तुमच्या घरापर्यंत जलद आणि सुरक्षित शिपिंग.',
-      trusted: 'विश्वासार्ह सेवा',
-      trustedDesc: 'हजारो समाधानी घरमालक आणि व्यावसायिकांचा विश्वास.'
-    },
-    testimonials: {
-      title: 'संवाद',
-      subtitle: 'ग्राहकांचे अनुभव',
-      reviews: [
-        { name: 'एमिली रिव्हर्स', role: 'घरमालक', content: 'ओम साई फर्निचरने माझ्या घराचा कायापालट केला. तपशीलांकडे दिलेले लक्ष अतुलनीय आहे.' },
-        { name: 'मार्कस चेन', role: 'इंटीरियर डिझायनर', content: 'डिझायनर म्हणून, मी नेहमी त्यांच्या सातत्य आणि प्रीमियम फिनिशसाठी ओम साई फर्निचरची शिफारस करतो.' },
-        { name: 'सारा मिलर', role: 'ऑफिस मॅनेजर', content: 'आमचा नवीन ऑफिस सेटअप व्यावसायिक आणि आरामदायक आहे. टीमसोबत काम करणे विलक्षण होते.' }
-      ]
-    },
-    gallery: {
-      title: 'आर्किटेक्चरल दृश्ये',
-      subtitle: 'व्हिज्युअल शोकेस'
-    },
-    contact: {
-      title: 'संपर्क साधा',
-      desc: 'मनात एखादा प्रकल्प आहे का? आमचे इंटीरियर कन्सल्टंट तुम्हाला तुमची जागा सजवण्यात मदत करण्यास तयार आहेत.',
-      phone: 'फोन',
-      email: 'ईमेल',
-      visit: 'शो-रूमला भेट द्या',
-      connected: 'आमच्याशी जोडलेले राहा',
-      formTitle: 'चौकशी फॉर्म',
-      name: 'तुमचे नाव',
-      emailLabel: 'ईमेल पत्ता',
-      subject: 'विषय',
-      detail: 'आवश्यकतेचा तपशील',
-      placeholderName: 'जॉन डो',
-      placeholderEmail: 'john@example.com',
-      placeholderDetail: 'तुमच्या जागेबद्दल सांगा...',
-      submit: 'चौकशी संदेश पाठवा',
-      footerNote: 'आम्ही २४ तासांच्या आत तुमच्याशी संपर्क साधू.',
-      locationTitle: 'शो-रूमचे ठिकाण',
-      whatsapp: 'आता व्हॉट्सॲप करा',
-      subjects: ['शो-रूम भेट चौकशी', 'सानुकूल फर्निचर कॅटलॉग', 'इंटीरियर कन्सल्टेशन', 'मोठ्या ऑर्डरची चौकशी']
-    },
-    footer: {
-      desc: '२०१० पासून उच्च-स्तरीय फर्निचर आणि सानुकूल इंटीरियर सोल्यूशन्स प्रदान करत आहोत. प्रत्येक कोपऱ्यात उत्कृष्ट गुणवत्ता.',
-      social: ['इन्स्टाग्राम', 'पिनट्रेस्ट', 'बिहॅन्स'],
-      company: 'कंपनी',
-      access: 'शो-रूम प्रवेश',
-      open: 'शो-रूम उघडे आहे',
-      cities: 'न्यूयॉर्क / मिलान / टोक्यो',
-      newsletter: 'ओम साई अपडेट्ससाठी सदस्य व्हा',
-      submit: 'सबमिट करा',
-      rights: 'सर्व हक्क राखीव.',
-      privacy: 'गोपनीयता',
-      terms: 'अटी'
-    },
-    process: {
-      title: 'प्रक्रियेचा प्रवास',
-      subtitle: 'निर्मिती प्रक्रिया',
-      steps: [
-        { id: '०१', title: 'परामर्श', desc: 'आम्ही तुमची कल्पना आणि जागेची रचना समजून घेण्यापासून सुरुवात करतो.' },
-        { id: '०२', title: 'डिझाइन', desc: 'आमचे आर्किटेक्ट्स तुमच्या वस्तूचे तपशीलवार ३D ब्ल्यू प्रिंट्स तयार करतात.' },
-        { id: '०३', title: 'क्राफ्ट', desc: 'कुशल कारागीर पारंपारिक अवजारांचा वापर करून वस्तू प्रत्यक्षात आणतात.' },
-        { id: '०४', title: 'वितरण', desc: 'सुरक्षित वितरण तुमच्या वस्तूची सर्वोत्तम स्थितीत पोहोचण्याची खात्री देते.' }
-      ]
-    },
-    sustainability: {
-      title: 'पर्यावरण पूरक नैतिकता',
-      subtitle: 'निसर्ग प्रथम',
-      desc: 'सौंदर्य घडवताना आम्ही पृथ्वीचे रक्षण करण्यास वचनबद्ध आहोत. टिकाऊ लाकडाचा वापर करून निसर्गाचा समतोल राखला जातो.',
-      stats: [
-        { label: 'शाश्वत स्रोत', value: '१००%' },
-        { label: 'शून्य कचरा उत्पादन', value: '९४%' },
-        { label: 'फेअर ट्रेड कारागीर', value: '१००%' }
-      ]
-    },
-    consultation: {
-      title: 'तुमची जागा सजवा',
-      subtitle: 'खाजगी इंटीरियर डिझाइन',
-      desc: 'आमच्या विशेष इंटीरियर कन्सल्टेशन सेवेचा लाभ घ्या. आमचे वरिष्ठ डिझायनर तुमच्या आवडीनुसार जागा सजवण्यासाठी काम करतील.',
-      button: 'खाजगी भेटीसाठी बुक करा'
-    }
-  }
-};
-
-const BRAND_INFO = {
-  name: 'Om Sai Furniture',
-  tagline: 'Modern Furniture For Modern Living',
-  phone: '+1 (555) 000-SAI',
-  whatsapp: '+15550005893',
-  email: 'concierge@omsai-furniture.com',
-  address: '123 Designer Row, Interiors District, NY 10001'
-};
-
-const NAV_LINKS = [
-  { name: 'Home', href: '#home' },
-  { name: 'Collection', href: '#collection' },
-  { name: 'About', href: '#about' },
-  { name: 'Services', href: '#services' },
-  { name: 'Gallery', href: '#gallery' },
-  { name: 'Contact', href: '#contact' }
-];
-
-const CATEGORIES = [
-  { name: 'Sofa Sets', image: '/hero.png' },
-  { name: 'Beds', image: '/bedroom.png' },
-  { name: 'Dining Tables', image: '/dining.png' },
-  { name: 'Office Furniture', image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&q=80&w=800' },
-  { name: 'Modular Kitchen', image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=800' },
-  { name: 'Wooden Furniture', image: 'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&q=80&w=800' }
-];
-
-const PRODUCTS = [
-  { id: 1, name: 'Velvet Cloud Sofa', price: '$2,499', image: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&q=80&w=600' },
-  { id: 2, name: 'Nordic Oak Bed', price: '$1,850', image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&q=80&w=600' },
-  { id: 3, name: 'Marble Top Dining Table', price: '$3,200', image: 'https://images.unsplash.com/photo-1577140917449-619eafbafe5f?auto=format&fit=crop&q=80&w=600' },
-  { id: 4, name: 'Executive Walnut Desk', price: '$1,400', image: 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&q=80&w=600' }
-];
-
-const WHY_CHOOSE_US = [
-  { icon: ShieldCheck, title: 'Premium Quality', desc: 'Crafted with the finest materials for longevity.' },
-  { icon: Tag, title: 'Affordable Pricing', desc: 'Luxury furniture at competitive market prices.' },
-  { icon: Truck, title: 'Fast Delivery', desc: 'Swift and secure shipping to your doorstep.' },
-  { icon: Users, title: 'Trusted Service', desc: 'Thousands of satisfied homeowners and business owners.' }
-];
+import { 
+  Language, 
+  TRANSLATIONS, 
+  BRAND_INFO, 
+  CATEGORIES, 
+  PRODUCTS, 
+  GALLERY 
+} from './constants';
 
 const REVIEWS = [
   { name: 'Emily Rivers', role: 'Home Owner', content: 'Om Sai Furniture transformed my house into a dream home. The attention to detail is unmatched.', rating: 5, avatar: 'https://i.pravatar.cc/150?u=emily' },
   { name: 'Marcus Chen', role: 'Interior Designer', content: 'As a designer, I always recommend Om Sai Furniture for their consistency and premium finish.', rating: 5, avatar: 'https://i.pravatar.cc/150?u=marcus' },
   { name: 'Sarah Miller', role: 'Office Manager', content: 'Our new office setup is professional yet comfortable. The team was fantastic to work with.', rating: 5, avatar: 'https://i.pravatar.cc/150?u=sarah' }
-];
-
-const GALLERY = [
-  'https://images.unsplash.com/photo-1616486341353-c5833cd711bd?auto=format&fit=crop&q=80&w=600',
-  'https://images.unsplash.com/photo-1616137422495-1e9e46e2aa77?auto=format&fit=crop&q=80&w=600',
-  'https://images.unsplash.com/photo-1616594831320-a24d2820ac34?auto=format&fit=crop&q=80&w=600',
-  'https://images.unsplash.com/photo-1616593874853-228795fd0a21?auto=format&fit=crop&q=80&w=600',
-  'https://images.unsplash.com/photo-1615876234886-fd9a39faa97f?auto=format&fit=crop&q=80&w=600',
-  'https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=600'
 ];
 
 // Helper Hooks
@@ -393,24 +61,56 @@ function useIntersectionObserver(options = {}) {
   return [elementRef, isIntersecting];
 }
 
+const ScrollProgress = () => {
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = (window.scrollY / scrollHeight) * 100;
+      setWidth(scrolled);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <div className="fixed top-0 left-0 w-full h-1 z-[60]">
+      <motion.div 
+        className="h-full bg-brand-wood" 
+        style={{ width: `${width}%` }}
+        initial={{ width: 0 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+      />
+    </div>
+  );
+};
+
 // Components
 const SectionTitle = ({ title, subtitle, centered = true }) => (
   <div className={`mb-16 ${centered ? 'text-center' : 'text-left'}`}>
     <motion.span 
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.6 }}
       className="text-brand-wood font-serif italic text-lg mb-3 block"
     >
       {subtitle}
     </motion.span>
     <motion.h2 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      className="text-4xl md:text-6xl font-serif text-brand-brown uppercase tracking-tighter"
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      className="text-4xl md:text-6xl lg:text-7xl font-serif text-brand-brown uppercase tracking-tighter"
     >
       {title}
     </motion.h2>
-    <div className={`h-[1px] w-24 bg-brand-border mt-8 ${centered ? 'mx-auto' : ''}`} />
+    <motion.div 
+      initial={{ width: 0 }}
+      whileInView={{ width: 96 }}
+      transition={{ duration: 1, delay: 0.4 }}
+      className={`h-[1px] bg-brand-border mt-8 ${centered ? 'mx-auto' : ''}`} 
+    />
   </div>
 );
 
@@ -435,36 +135,52 @@ const Navbar = ({ lang, setLang, t }: { lang: Language, setLang: (l: Language) =
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center space-x-12">
           <div className="flex items-center space-x-8">
-            <a href="#home" className={`text-[10px] font-bold uppercase tracking-widest transition-all hover:text-brand-wood ${isScrolled ? 'text-brand-brown' : 'text-white'}`}>{t.nav.home}</a>
-            <a href="#collection" className={`text-[10px] font-bold uppercase tracking-widest transition-all hover:text-brand-wood ${isScrolled ? 'text-brand-brown' : 'text-white'}`}>{t.nav.collection}</a>
-            <a href="#about" className={`text-[10px] font-bold uppercase tracking-widest transition-all hover:text-brand-wood ${isScrolled ? 'text-brand-brown' : 'text-white'}`}>{t.nav.about}</a>
-            <a href="#services" className={`text-[10px] font-bold uppercase tracking-widest transition-all hover:text-brand-wood ${isScrolled ? 'text-brand-brown' : 'text-white'}`}>{t.nav.services}</a>
-            <a href="#contact" className={`text-[10px] font-bold uppercase tracking-widest transition-all hover:text-brand-wood ${isScrolled ? 'text-brand-brown' : 'text-white'}`}>{t.nav.contact}</a>
+            {[
+              { label: t.nav.home, href: '#home' },
+              { label: t.nav.collection, href: '#collection' },
+              { label: t.nav.about, href: '#about' },
+              { label: t.nav.services, href: '#services' },
+              { label: t.nav.contact, href: '#contact' }
+            ].map((link) => (
+              <a 
+                key={link.href}
+                href={link.href} 
+                className={`group relative text-[10px] font-bold uppercase tracking-widest transition-all ${isScrolled ? 'text-brand-brown' : 'text-white'}`}
+              >
+                {link.label}
+                <motion.span 
+                  className="absolute -bottom-1 left-0 w-0 h-[1px] bg-brand-wood transition-all group-hover:w-full"
+                  whileHover={{ width: '100%' }}
+                />
+              </a>
+            ))}
           </div>
           
           <div className="flex items-center space-x-6 border-l border-brand-border/20 pl-12">
             {/* Language Switcher */}
-            <div className="flex bg-brand-border/20 p-1 rounded-full">
+            <div className="flex bg-brand-border/20 p-1 rounded-full backdrop-blur-sm">
               <button 
                 onClick={() => setLang('en')}
-                className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'en' ? 'bg-brand-brown text-white' : 'text-brand-brown/40 hover:text-brand-brown'}`}
+                className={`px-4 py-1.5 rounded-full text-[10px] font-bold transition-all duration-300 ${lang === 'en' ? 'bg-brand-brown text-white shadow-lg' : 'text-brand-brown/40 hover:text-brand-brown'}`}
               >
                 EN
               </button>
               <button 
                 onClick={() => setLang('mr')}
-                className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'mr' ? 'bg-brand-brown text-white' : 'text-brand-brown/40 hover:text-brand-brown'}`}
+                className={`px-4 py-1.5 rounded-full text-[10px] font-bold transition-all duration-300 ${lang === 'mr' ? 'bg-brand-brown text-white shadow-lg' : 'text-brand-brown/40 hover:text-brand-brown'}`}
               >
                 मराठी
               </button>
             </div>
 
-            <a 
+            <motion.a 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               href="#contact" 
               className={`px-8 py-3 border text-[10px] font-bold uppercase tracking-widest transition-all ${isScrolled ? 'border-brand-brown text-brand-brown hover:bg-brand-brown hover:text-white' : 'border-white text-white hover:bg-white hover:text-brand-brown'}`}
             >
               {t.nav.book}
-            </a>
+            </motion.a>
           </div>
         </div>
 
@@ -558,24 +274,40 @@ const Hero = ({ t }: { t: any }) => {
         {/* Right Media */}
         <div className="md:col-span-5 relative bg-secondary-beige min-h-[400px] md:min-h-screen">
           <div className="absolute inset-0 group overflow-hidden">
-            <img 
-              src="/hero.png" 
-              alt="Luxury Living" 
-              className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+            <motion.img 
+              initial={{ scale: 1.2 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 2.5, ease: "easeOut" }}
+              src="/photos/luxury-velvet-sofa.jpeg" 
+              alt="Premium Velvet Sofa from Om Sai Furniture Collection" 
+              className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
+              loading="eager"
             />
             <div className="absolute inset-0 bg-brand-brown/5"></div>
             
+            {/* Animated Decorative Circle */}
+            <motion.div 
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="absolute -top-20 -right-20 w-64 h-64 border border-brand-wood/20 rounded-full"
+            />
+
             {/* Featured Floating Badge */}
-            <div className="absolute bottom-6 md:bottom-10 right-6 md:right-10 p-6 md:p-10 bg-brand-beige border border-brand-border shadow-2xl backdrop-blur-sm max-w-[240px] md:max-w-xs transition-transform group-hover:-translate-y-4">
+            <motion.div 
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1, duration: 0.8 }}
+              className="absolute bottom-6 md:bottom-10 right-6 md:right-10 p-6 md:p-10 bg-brand-beige border border-brand-border shadow-2xl backdrop-blur-sm max-w-[240px] md:max-w-xs transition-transform group-hover:-translate-y-4"
+            >
               <p className="text-[8px] md:text-[10px] tracking-widest uppercase mb-2 font-bold text-brand-wood">{t.hero.featured}</p>
               <h2 className="text-xl md:text-2xl font-serif italic text-brand-brown">{t.hero.sofa}</h2>
               <div className="h-px bg-brand-border my-4 w-12"></div>
-              <p className="text-sm font-bold uppercase tracking-tighter text-brand-brown">$3,299</p>
+              <p className="text-sm font-bold uppercase tracking-tighter text-brand-brown">₹65,000</p>
               <div className="absolute top-0 right-0 p-4">
                 <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border border-brand-brown flex items-center justify-center rotate-45 group-hover:rotate-0 transition-transform text-xs md:text-base">→</div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -596,18 +328,21 @@ const FeaturedCategories = ({ t }: { t: any }) => {
           {CATEGORIES.map((cat, idx) => (
             <motion.div 
               key={cat.name}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: idx * 0.1 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1, duration: 0.8 }}
               viewport={{ once: true }}
+              whileHover={{ y: -10 }}
               className="group relative h-[400px] md:h-[500px] cursor-pointer border-r border-b border-brand-border overflow-hidden"
             >
-
-              <img 
+              <motion.img 
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 1 }}
                 src={`${cat.image}`} 
-                alt={cat.name} 
-                className="w-full h-full object-cover group-hover:scale-110 transition-all duration-1000"
+                alt={`${cat.name} Collection - Om Sai Furniture`} 
+                className="w-full h-full object-cover transition-all"
                 referrerPolicy="no-referrer"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-brand-brown/40 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <div className="absolute top-0 left-0 p-8">
@@ -615,9 +350,12 @@ const FeaturedCategories = ({ t }: { t: any }) => {
                 <h3 className="text-3xl font-serif text-white uppercase tracking-tighter">{t.categories.items[idx]}</h3>
               </div>
               <div className="absolute bottom-10 right-10">
-                <div className="w-12 h-12 rounded-full border border-white text-white flex items-center justify-center -rotate-45 group-hover:rotate-0 transition-transform">
+                <motion.div 
+                  whileHover={{ rotate: 45 }}
+                  className="w-12 h-12 rounded-full border border-white text-white flex items-center justify-center -rotate-45"
+                >
                   →
-                </div>
+                </motion.div>
               </div>
             </motion.div>
           ))}
@@ -648,25 +386,28 @@ const BestSellers = ({ t }: { t: any }) => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-l border-brand-border">
-
           {PRODUCTS.map((product, idx) => (
             <motion.div 
               key={product.id}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: idx * 0.1 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ delay: idx * 0.1, duration: 0.6 }}
               viewport={{ once: true }}
-              className="group border-r border-b border-brand-border bg-white p-8 hover:bg-brand-beige transition-colors"
+              className="group border-r border-b border-brand-border bg-white p-8 hover:bg-brand-beige transition-colors relative overflow-hidden"
             >
               <div className="relative overflow-hidden mb-8 aspect-[4/5]">
-                <img 
+                <motion.img 
+                   whileHover={{ scale: 1.15 }}
+                   transition={{ duration: 0.8 }}
                    src={product.image} 
-                  alt={product.name} 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  alt={`${product.name} - Handcrafted Furniture`} 
+                  className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
+                  loading="lazy"
                 />
+                <div className="absolute inset-0 bg-brand-brown/0 group-hover:bg-brand-brown/10 transition-colors duration-500" />
               </div>
-              <div className="flex justify-between items-start">
+              <div className="flex justify-between items-start relative z-10">
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-widest text-brand-wood mb-2">{t.bestSellers.itemLabel} {idx + 1}</p>
                   <h3 className="text-xl font-serif text-brand-brown mb-2 uppercase tracking-tight leading-tight">{product.name}</h3>
@@ -674,9 +415,12 @@ const BestSellers = ({ t }: { t: any }) => {
                 </div>
                 <p className="text-sm font-bold text-brand-brown">{product.price}</p>
               </div>
-              <button className="mt-8 w-full border border-brand-brown py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-brand-brown hover:text-white transition-all opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 duration-300">
+              <motion.button 
+                whileHover={{ y: -5, backgroundColor: '#1A120B', color: '#fff' }}
+                className="mt-8 w-full border border-brand-brown py-4 text-[10px] font-bold uppercase tracking-widest transition-all opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 duration-300"
+              >
                 {t.bestSellers.inquiry}
-              </button>
+              </motion.button>
             </motion.div>
           ))}
         </div>
@@ -697,10 +441,11 @@ const AboutUs = ({ t }: { t: any }) => {
         >
           <div className="relative overflow-hidden h-[400px] md:h-[600px] w-full border border-brand-border">
             <img 
-              src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&q=80&w=800" 
-              alt="Designer working" 
+              src="/photos/interior-design-work.jpeg" 
+              alt="Artisan at work - Om Sai Furniture Craftsmanship" 
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
+              loading="lazy"
             />
           </div>
           <div className="pt-6 md:pt-8">
@@ -835,10 +580,11 @@ const SignatureSeries = ({ t }: { t: any }) => {
           >
             <div className="aspect-[3/4] overflow-hidden border border-brand-border p-3">
               <img 
-                src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=1200" 
-                alt="Signature Series" 
+                src="/photos/marble-dining-table.jpeg" 
+                alt="Signature Edition Marble Dining Table - Om Sai Furniture" 
                 className="w-full h-full object-cover transition-transform duration-[3000ms] hover:scale-110"
                 referrerPolicy="no-referrer"
+                loading="lazy"
               />
             </div>
             {/* Absolute decorative elements */}
@@ -949,10 +695,11 @@ const SustainabilitySection = ({ t }: { t: any }) => {
           <div className="relative">
             <div className="aspect-[4/5] border border-white/20 p-4">
               <img 
-                src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800" 
-                alt="Sustainability" 
+                src="/photos/modern-wooden-bed.jpeg" 
+                alt="Sustainable Solid Wood Bed - Eco-friendly Furniture" 
                 className="w-full h-full object-cover transition-all duration-1000"
                 referrerPolicy="no-referrer"
+                loading="lazy"
               />
             </div>
             {/* Overlay card */}
@@ -1052,9 +799,10 @@ const GallerySection = ({ t }: { t: any }) => {
 
               <img 
                 src={img} 
-                alt={`Gallery ${idx}`} 
+                alt={`Gallery Showcase ${idx + 1} - Om Sai Furniture Interiors`} 
                 className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
                 referrerPolicy="no-referrer"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-brand-brown/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <div className="w-16 h-16 rounded-full border border-white text-white flex items-center justify-center rotate-45 group-hover:rotate-0 transition-transform">
@@ -1318,6 +1066,7 @@ export default function App() {
 
   return (
     <div className="bg-white font-sans text-brand-brown selection:bg-brand-wood selection:text-white">
+      <ScrollProgress />
       <Navbar lang={lang} setLang={setLang} t={t} />
       
       <main>
