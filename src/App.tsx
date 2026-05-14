@@ -87,30 +87,32 @@ const ScrollProgress = () => {
 };
 
 // Components
-const SectionTitle = ({ title, subtitle, centered = true }) => (
-  <div className={`mb-16 ${centered ? 'text-center' : 'text-left'}`}>
+const SectionTitle = ({ title, subtitle, centered = true }: { title: string, subtitle: string, centered?: boolean }) => (
+  <div className={`mb-16 ${centered ? 'text-center' : 'text-left'} relative`}>
     <motion.span 
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
       className="text-brand-wood font-serif italic text-lg mb-3 block"
     >
       {subtitle}
     </motion.span>
-    <motion.h2 
-      initial={{ opacity: 0, scale: 0.95 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.8, delay: 0.2 }}
-      className="text-4xl md:text-6xl lg:text-7xl font-serif text-brand-brown uppercase tracking-tighter"
-    >
-      {title}
-    </motion.h2>
-    <motion.div 
-      initial={{ width: 0 }}
-      whileInView={{ width: 96 }}
-      transition={{ duration: 1, delay: 0.4 }}
-      className={`h-[1px] bg-brand-border mt-8 ${centered ? 'mx-auto' : ''}`} 
-    />
+    <div className={`relative inline-block ${centered ? '' : 'w-full'}`}>
+      <motion.h2 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="text-4xl md:text-6xl font-serif text-brand-brown uppercase tracking-tighter"
+      >
+        {title}
+      </motion.h2>
+      <motion.div 
+        initial={{ width: 0 }}
+        whileInView={{ width: centered ? '100%' : '100px' }}
+        transition={{ duration: 1.2, delay: 0.5, ease: "easeInOut" }}
+        className={`h-[1px] bg-brand-wood/40 mt-4 ${centered ? 'mx-auto' : ''}`}
+      />
+    </div>
   </div>
 );
 
@@ -280,6 +282,12 @@ const Hero = ({ t }: { t: any }) => {
             <p className="max-w-md text-xs md:text-sm leading-relaxed opacity-80 mb-8 md:mb-10 font-medium italic text-brand-brown">
               {t.hero.desc}
             </p>
+            <div className="flex items-center gap-4 mb-10 group cursor-pointer" onClick={() => document.getElementById('founder')?.scrollIntoView({ behavior: 'smooth' })}>
+              <div className="w-10 h-10 rounded-full border border-brand-wood/30 p-1 overflow-hidden">
+                <img src={BRAND_INFO.ownerPhoto} className="w-full h-full object-cover rounded-full" alt="Founder Thumbnail" />
+              </div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-brand-wood group-hover:translate-x-1 transition-transform">Message from Swapnil Dighe →</p>
+            </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <button className="bg-brand-brown text-white px-8 md:px-10 py-4 md:py-5 text-[10px] font-bold uppercase tracking-widest hover:bg-brand-accent transition-colors">
                 {t.hero.explore}
@@ -518,7 +526,7 @@ const AboutUs = ({ t }: { t: any }) => {
 
 const MeetTheOwner = ({ t }: { t: any }) => {
   return (
-    <section className="py-24 bg-brand-beige/20 border-b border-brand-border">
+    <section id="founder" className="py-24 bg-brand-beige/20 border-b border-brand-border overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
           <div className="md:col-span-5 order-2 md:order-1">
@@ -531,7 +539,8 @@ const MeetTheOwner = ({ t }: { t: any }) => {
                 "{t.owner.message}"
               </p>
               <div>
-                <h3 className="text-xl font-serif text-brand-brown">{t.owner.name}</h3>
+                <h3 className="text-3xl md:text-4xl font-serif text-brand-brown mb-1 italic tracking-tight" style={{ fontFamily: 'serif' }}>{t.owner.name}</h3>
+                <div className="w-20 h-[1px] bg-brand-wood/30 mb-4"></div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-brand-wood">{t.owner.role}</p>
                 <p className="text-xs font-medium italic text-brand-brown/60 mt-2">{t.owner.experience}</p>
               </div>
@@ -539,17 +548,25 @@ const MeetTheOwner = ({ t }: { t: any }) => {
           </div>
           
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: "easeOut" }}
             viewport={{ once: true }}
-            className="md:col-span-7 order-1 md:order-2"
+            className="md:col-span-7 order-1 md:order-2 flex justify-center items-center"
           >
-            <div className="relative group">
-              <div className="aspect-[4/5] sm:aspect-auto sm:h-[600px] overflow-hidden border border-brand-border bg-white shadow-2xl relative">
+            <div className="relative">
+              {/* Rotating Decorative Ring */}
+              <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="absolute -inset-8 border border-dashed border-brand-wood/20 rounded-full"
+              />
+              
+              {/* Circular Photo Container */}
+              <div className="w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full overflow-hidden border-[12px] border-white shadow-2xl relative z-10">
                 {/* Fallback Background with Initials */}
                 <div className="absolute inset-0 bg-brand-beige flex items-center justify-center -z-10">
-                   <span className="text-8xl font-serif text-brand-brown/10 tracking-tighter uppercase">
+                   <span className="text-9xl font-serif text-brand-brown/10 tracking-tighter uppercase">
                      {t.owner.name.split(' ').map((n: string) => n[0]).join('')}
                    </span>
                 </div>
@@ -557,7 +574,7 @@ const MeetTheOwner = ({ t }: { t: any }) => {
                 <img 
                   src={BRAND_INFO.ownerPhoto} 
                   alt={`${BRAND_INFO.name} Founder - ${t.owner.name}`} 
-                  className="w-full h-full object-top object-cover group-hover:scale-105 transition-all duration-700 relative z-10"
+                  className="w-full h-full object-top object-cover hover:scale-110 transition-all duration-1000 relative z-10"
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = 'none';
                   }}
@@ -565,12 +582,18 @@ const MeetTheOwner = ({ t }: { t: any }) => {
                   loading="lazy"
                 />
               </div>
-              
-              {/* Decorative Elements */}
-              <div className="absolute -top-4 -left-4 w-20 h-20 border-t border-l border-brand-wood/30 -z-10 hidden md:block"></div>
-              <div className="absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 w-24 h-24 md:w-32 md:h-32 bg-brand-accent rounded-full flex items-center justify-center p-3 md:p-4 text-center shadow-xl border border-white/50 backdrop-blur-sm z-20">
-                 <p className="text-[7px] md:text-[8px] font-black uppercase tracking-widest text-brand-brown">Crafting excellence Since 2010</p>
-              </div>
+
+              {/* Floating Signature Badge */}
+              <motion.div 
+                initial={{ rotate: -10, opacity: 0 }}
+                whileInView={{ rotate: 0, opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                className="absolute -bottom-6 -left-6 md:-bottom-10 md:-left-10 w-32 h-32 md:w-40 md:h-40 bg-brand-brown text-white rounded-full flex flex-col items-center justify-center p-4 text-center shadow-2xl z-20 border-4 border-white"
+              >
+                 <span className="text-[8px] font-black uppercase tracking-[0.2em] mb-1">Authentic</span>
+                 <p className="text-[10px] md:text-xs font-serif italic border-t border-white/20 pt-1 mt-1">Swapnil Dighe</p>
+                 <span className="text-[6px] uppercase tracking-widest mt-2 opacity-50">Signature Edition</span>
+              </motion.div>
             </div>
           </motion.div>
         </div>
@@ -1118,13 +1141,13 @@ export default function App() {
       
       <main>
         <Hero t={t} />
+        <MeetTheOwner t={t} />
         <Features t={t} />
         <FeaturedCategories t={t} />
         <BestSellers t={t} />
         <ProcessSection t={t} />
         <SignatureSeries t={t} />
         <AboutUs t={t} />
-        <MeetTheOwner t={t} />
         <SustainabilitySection t={t} />
         <ConsultationCTA t={t} />
         <GallerySection t={t} />
