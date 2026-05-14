@@ -1048,7 +1048,7 @@ const ContactSection = ({ t }: { t: any }) => {
                 </div>
                 <div className="mt-8 flex gap-4">
                   <a 
-                    href={`https://wa.me/${BRAND_INFO.whatsapp}`} 
+                    href={`https://wa.me/${BRAND_INFO.whatsapp}?text=HI%20%2C%20Swapnil%20sir`} 
                     target="_blank" rel="noopener noreferrer"
                     className="flex-grow bg-green-500 text-white rounded-xl py-4 flex items-center justify-center gap-2 font-bold hover:bg-green-600 transition-colors"
                   >
@@ -1179,7 +1179,7 @@ export default function App() {
           <Phone size={20} /> {lang === 'en' ? 'Call Now' : 'कॉल करा'}
         </a>
         <a 
-          href={`https://wa.me/${BRAND_INFO.whatsapp}`} 
+          href={`https://wa.me/${BRAND_INFO.whatsapp}?text=HI%20%2C%20Swapnil%20sir`} 
           className="bg-green-500 text-white flex-grow py-4 rounded-full flex items-center justify-center gap-3 font-bold shadow-2xl border border-white/20"
         >
           <MessageCircle size={20} /> WhatsApp
