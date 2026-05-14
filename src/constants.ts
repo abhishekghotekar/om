@@ -290,10 +290,10 @@ export const TRANSLATIONS = {
 export const BRAND_INFO = {
   name: 'Om Sai Furniture',
   tagline: 'Modern Furniture For Modern Living',
-  phone: '+91 95520 36972',
-  whatsapp: '919552036972',
-  email: 'contact@omsai-furniture.com',
-  address: 'Plot No. 45, Industrial Estate, Pune, Maharashtra 411001'
+  phone: '+91 96578 66450',
+  whatsapp: '919657866450',
+  email: 'swapnildighe7592@gmail.com',
+  address: 'Koprgaon Road, Talegaon Dighe, Dist Sangamner, 422608, Ahmednagar, Maharashtra'
 };
 
 export const CATEGORIES = [
