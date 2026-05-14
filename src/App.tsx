@@ -159,6 +159,12 @@ const Navbar = ({ lang, setLang, t }: { lang: Language, setLang: (l: Language) =
           </div>
           
           <div className="flex items-center space-x-6 border-l border-brand-border/20 pl-12">
+            <a 
+              href={`tel:${BRAND_INFO.phone}`} 
+              className={`flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-all ${isScrolled ? 'text-brand-brown' : 'text-white'}`}
+            >
+              <Phone size={14} /> {BRAND_INFO.phone}
+            </a>
             {/* Language Switcher */}
             <div className="flex bg-brand-border/20 p-1 rounded-full backdrop-blur-sm">
               <button 
@@ -1165,12 +1171,18 @@ export default function App() {
       <Footer t={t} />
 
       {/* Floating Inquiry Button (Mobile Exclusive) */}
-      <div className="md:hidden fixed bottom-6 left-6 right-6 z-40">
+      <div className="md:hidden fixed bottom-6 left-6 right-6 z-40 flex gap-3">
+        <a 
+          href={`tel:${BRAND_INFO.phone}`} 
+          className="bg-brand-brown text-white flex-grow py-4 rounded-full flex items-center justify-center gap-3 font-bold shadow-2xl border border-white/20"
+        >
+          <Phone size={20} /> {lang === 'en' ? 'Call Now' : 'कॉल करा'}
+        </a>
         <a 
           href={`https://wa.me/${BRAND_INFO.whatsapp}`} 
-          className="bg-green-500 text-white w-full py-4 rounded-full flex items-center justify-center gap-3 font-bold shadow-2xl"
+          className="bg-green-500 text-white flex-grow py-4 rounded-full flex items-center justify-center gap-3 font-bold shadow-2xl border border-white/20"
         >
-          <MessageCircle size={20} /> {lang === 'en' ? 'Chat with Specialist' : 'तज्ञांशी बोला'}
+          <MessageCircle size={20} /> WhatsApp
         </a>
       </div>
 
