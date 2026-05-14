@@ -856,28 +856,35 @@ const GallerySection = ({ t }: { t: any }) => {
           subtitle={t.gallery.subtitle}
         />
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 border-t border-l border-brand-border">
-          {GALLERY.slice(0, 4).map((img, idx) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+          {GALLERY.map((item, idx) => (
             <motion.div 
               key={idx}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: idx * 0.1 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1, duration: 0.8 }}
               viewport={{ once: true }}
-              className="relative overflow-hidden group cursor-pointer border-r border-b border-brand-border h-[300px] md:h-[400px]"
+              className="group cursor-pointer"
             >
-
-              <img 
-                src={img} 
-                alt={`Gallery Showcase ${idx + 1} - Om Sai Furniture Interiors`} 
-                className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
-                referrerPolicy="no-referrer"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-brand-brown/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <div className="w-16 h-16 rounded-full border border-white text-white flex items-center justify-center rotate-45 group-hover:rotate-0 transition-transform">
-                  →
-                </div>
+              <div className="relative overflow-hidden aspect-[4/5] mb-6 border border-brand-border">
+                <img 
+                  src={item.image} 
+                  alt={item.title} 
+                  className="w-full h-full object-cover group-hover:scale-110 transition-all duration-[2000ms] ease-out"
+                  referrerPolicy="no-referrer"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-brand-brown/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-serif text-brand-brown uppercase tracking-tight group-hover:text-brand-wood transition-colors">{item.title}</h3>
+                <p className="text-sm italic opacity-60 leading-relaxed max-w-xs">{item.desc}</p>
+                <motion.div 
+                  initial={{ width: 0 }}
+                  whileInView={{ width: '40px' }}
+                  transition={{ delay: 0.5 + idx * 0.1 }}
+                  className="h-[1px] bg-brand-wood/40 mt-4"
+                />
               </div>
             </motion.div>
           ))}

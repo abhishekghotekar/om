@@ -314,10 +314,10 @@ export const PRODUCTS = [
 ];
 
 export const GALLERY = [
-  '/photos/showroom-gallery-1.jpeg',
-  '/photos/interior-design-work.jpeg',
-  '/photos/classic-sofa-set.jpeg',
-  '/photos/premium-king-bed.jpeg',
-  '/photos/designer-sofa-chair.jpeg',
-  '/photos/modular-kitchen-wall.jpeg'
+  { image: '/photos/showroom-gallery-1.jpeg', title: 'Main Showroom', desc: 'Experience luxury in every corner of our flagship store.' },
+  { image: '/photos/interior-design-work.jpeg', title: 'Interior Projects', desc: 'Custom interior solutions for modern living spaces.' },
+  { image: '/photos/classic-sofa-set.jpeg', title: 'Living Comfort', desc: 'Handcrafted sofa sets designed for ultimate relaxation.' },
+  { image: '/photos/premium-king-bed.jpeg', title: 'Master Bedroom', desc: 'Premium king-sized beds with artistic headboards.' },
+  { image: '/photos/designer-sofa-chair.jpeg', title: 'Accent Seating', desc: 'Unique designer chairs that define your room style.' },
+  { image: '/photos/modular-kitchen-wall.jpeg', title: 'Modular Kitchen', desc: 'Modern kitchen solutions that blend utility with beauty.' }
 ];
