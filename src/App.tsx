@@ -205,24 +205,56 @@ const Navbar = ({ lang, setLang, t }: { lang: Language, setLang: (l: Language) =
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div 
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-b overflow-hidden"
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-0 bg-brand-beige z-50 flex flex-col p-10 md:hidden"
           >
-            <div className="flex flex-col p-6 space-y-4">
-              <a href="#home" onClick={() => setIsMenuOpen(false)} className="text-lg font-medium text-gray-800 border-b border-gray-50 pb-2">{t.nav.home}</a>
-              <a href="#collection" onClick={() => setIsMenuOpen(false)} className="text-lg font-medium text-gray-800 border-b border-gray-50 pb-2">{t.nav.collection}</a>
-              <a href="#about" onClick={() => setIsMenuOpen(false)} className="text-lg font-medium text-gray-800 border-b border-gray-50 pb-2">{t.nav.about}</a>
-              <a href="#contact" onClick={() => setIsMenuOpen(false)} className="text-lg font-medium text-gray-800 border-b border-gray-50 pb-2">{t.nav.contact}</a>
-              <a 
-                href="#contact" 
-                onClick={() => setIsMenuOpen(false)}
-                className="bg-brand-brown text-white py-3 rounded-xl text-center font-bold"
-              >
-                {t.nav.book}
-              </a>
+            <div className="flex justify-between items-center mb-20">
+              <span className="text-xl font-serif font-bold tracking-tighter text-brand-brown">
+                {BRAND_INFO.name.toUpperCase()}
+              </span>
+              <button onClick={() => setIsMenuOpen(false)} className="text-brand-brown p-2">
+                <X size={32} />
+              </button>
             </div>
+
+            <div className="flex flex-col space-y-8">
+              {[
+                { label: t.nav.home, href: '#home' },
+                { label: t.nav.collection, href: '#collection' },
+                { label: t.nav.about, href: '#about' },
+                { label: t.nav.services, href: '#services' },
+                { label: t.nav.contact, href: '#contact' }
+              ].map((link, idx) => (
+                <motion.a 
+                  key={link.href}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + idx * 0.1 }}
+                  href={link.href} 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-4xl font-serif text-brand-brown uppercase tracking-tighter"
+                >
+                  {link.label}
+                </motion.a>
+              ))}
+            </div>
+
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+              className="mt-auto pt-10 border-t border-brand-border"
+            >
+              <p className="text-[10px] font-bold uppercase tracking-widest text-brand-wood mb-4">{t.contact.connected}</p>
+              <div className="flex gap-6">
+                <Facebook size={24} className="text-brand-brown" />
+                <Instagram size={24} className="text-brand-brown" />
+                <Twitter size={24} className="text-brand-brown" />
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -507,22 +539,37 @@ const MeetTheOwner = ({ t }: { t: any }) => {
           </div>
           
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
             className="md:col-span-7 order-1 md:order-2"
           >
-            <div className="relative">
-              <div className="aspect-[16/10] overflow-hidden border border-brand-border p-4 bg-white shadow-2xl">
+            <div className="relative group">
+              <div className="aspect-[4/5] sm:aspect-auto sm:h-[600px] overflow-hidden border border-brand-border bg-white shadow-2xl relative">
+                {/* Fallback Background with Initials */}
+                <div className="absolute inset-0 bg-brand-beige flex items-center justify-center -z-10">
+                   <span className="text-8xl font-serif text-brand-brown/10 tracking-tighter uppercase">
+                     {t.owner.name.split(' ').map((n: string) => n[0]).join('')}
+                   </span>
+                </div>
+                
                 <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=1200" 
-                  alt="Founder Portrait" 
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                  src={BRAND_INFO.ownerPhoto} 
+                  alt={`${BRAND_INFO.name} Founder - ${t.owner.name}`} 
+                  className="w-full h-full object-top object-cover group-hover:scale-105 transition-all duration-700 relative z-10"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
                   referrerPolicy="no-referrer"
+                  loading="lazy"
                 />
               </div>
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-brand-accent rounded-full flex items-center justify-center p-4 text-center shadow-xl">
-                 <p className="text-[8px] font-black uppercase tracking-widest text-brand-brown">Crafting excellence Since 2010</p>
+              
+              {/* Decorative Elements */}
+              <div className="absolute -top-4 -left-4 w-20 h-20 border-t border-l border-brand-wood/30 -z-10 hidden md:block"></div>
+              <div className="absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 w-24 h-24 md:w-32 md:h-32 bg-brand-accent rounded-full flex items-center justify-center p-3 md:p-4 text-center shadow-xl border border-white/50 backdrop-blur-sm z-20">
+                 <p className="text-[7px] md:text-[8px] font-black uppercase tracking-widest text-brand-brown">Crafting excellence Since 2010</p>
               </div>
             </div>
           </motion.div>

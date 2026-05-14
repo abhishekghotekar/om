@@ -54,7 +54,7 @@ export const TRANSLATIONS = {
     owner: {
       title: 'The Visionary Behind Om Sai',
       subtitle: 'Meet Our Founder',
-      name: 'Abhishek Ghotekar',
+      name: 'Swapnil Dighe',
       role: 'Founder & Principal Designer',
       message: 'Furniture is not just about utility; it’s about creating a legacy within your home. My journey with Om Sai Furniture started with a simple belief: every piece of wood has a story, and our job is to tell it with grace and strength.',
       experience: '15+ Years of Mastery'
@@ -196,7 +196,7 @@ export const TRANSLATIONS = {
     owner: {
       title: 'ओम साई मागील दूरदृष्टी',
       subtitle: 'आमच्या संस्थापकांना भेटा',
-      name: 'अभिषेक घोटेकर',
+      name: 'स्वप्नील दिघे',
       role: 'संस्थापक आणि मुख्य डिझाइनर',
       message: 'फर्निचर म्हणजे केवळ उपयोग नाही; ते तुमच्या घरात एक वारसा तयार करण्याबद्दल आहे. ओम साई फर्निचरचा माझा प्रवास एका साध्या विश्वासाने सुरू झाला: लाकडाच्या प्रत्येक तुकड्याची एक कथा असते आणि ती कृपा आणि मजबुतीने सांगणे हे आमचे काम आहे.',
       experience: '१५+ वर्षांचे प्रभुत्व'
@@ -293,7 +293,8 @@ export const BRAND_INFO = {
   phone: '+91 96578 66450',
   whatsapp: '919657866450',
   email: 'swapnildighe7592@gmail.com',
-  address: 'Koprgaon Road, Talegaon Dighe, Dist Sangamner, 422608, Ahmednagar, Maharashtra'
+  address: 'Koprgaon Road, Talegaon Dighe, Dist Sangamner, 422608, Ahmednagar, Maharashtra',
+  ownerPhoto: '/photos/Screenshot 2026-05-14 160247.png'
 };
 
 export const CATEGORIES = [
